@@ -28,6 +28,7 @@ composableKinds: PanelCfg: {
 							frameIndex:    number | *0
 							showHeader:    bool | *true
 							showTypeIcons: bool | *false
+							cellHeight:    string | *"md"
 							sortBy?: [...common.TableSortByFieldState]
 						} @cuetsy(kind="interface")
 						PanelFieldConfig: common.TableFieldOptions & {} @cuetsy(kind="interface")
