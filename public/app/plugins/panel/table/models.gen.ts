@@ -25,7 +25,7 @@ export const defaultPanelOptions: PanelOptions = {
   frameIndex: 0,
   showHeader: true,
   showTypeIcons: false,
-  cellHeight: TableCellHeight.md,
+  cellHeight: TableCellHeight.Md,
   footer: {
     show: false,
     reducer: [],

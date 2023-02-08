@@ -348,7 +348,6 @@ export const Table = memo((props: Props) => {
                   width={'100%'}
                   ref={listRef}
                   style={{ overflow: undefined }}
-                  key={tableStyles.rowHeight}
                 >
                   {RenderRow}
                 </VariableSizeList>
