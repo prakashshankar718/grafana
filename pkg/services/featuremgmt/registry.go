@@ -429,5 +429,11 @@ var (
 			State:        FeatureStateAlpha,
 			FrontendOnly: true,
 		},
+		{
+			Name:         "timeSeriesTable",
+			Description:  "Enable time series table transformer & area chart cell type",
+			State:        FeatureStateAlpha,
+			FrontendOnly: true,
+		},
 	}
 )

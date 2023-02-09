@@ -310,4 +310,8 @@ const (
 	// FlagLogsContextDatasourceUi
 	// Allow datasource to provide custom UI for context view
 	FlagLogsContextDatasourceUi = "logsContextDatasourceUi"
+
+	// FlagTimeSeriesTable
+	// Enable time series table transformer &amp; area chart cell type
+	FlagTimeSeriesTable = "timeSeriesTable"
 )
