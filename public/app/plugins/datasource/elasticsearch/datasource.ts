@@ -91,6 +91,7 @@ export class ElasticDatasource
   includeFrozen: boolean;
   isProxyAccess: boolean;
   timeSrv: TimeSrv;
+  maybeEs7Info: boolean | null;
 
   constructor(
     instanceSettings: DataSourceInstanceSettings<ElasticsearchOptions>,
@@ -130,6 +131,7 @@ export class ElasticDatasource
     }
     this.languageProvider = new LanguageProvider(this);
     this.timeSrv = getTimeSrv();
+    this.maybeEs7Info = null;
   }
 
   private request(
@@ -234,6 +236,25 @@ export class ElasticDatasource
 
   private post(url: string, data: any): Observable<any> {
     return this.request('POST', url, data, { 'Content-Type': 'application/x-ndjson' });
+  }
+
+  private async isEs7Cached(): Promise<boolean> {
+    const data = await lastValueFrom(this.request('GET', '/'));
+    const versionNumber = data?.version?.number;
+    if (typeof versionNumber !== 'string') {
+      return false; // default value
+    }
+    return versionNumber.startsWith('7.');
+  }
+
+  async isEs7(): Promise<boolean> {
+    const maybe = this.maybeEs7Info;
+    if (maybe != null) {
+      return maybe;
+    }
+
+    this.maybeEs7Info = await this.isEs7Cached();
+    return this.maybeEs7Info;
   }
 
   annotationQuery(options: any): Promise<any> {

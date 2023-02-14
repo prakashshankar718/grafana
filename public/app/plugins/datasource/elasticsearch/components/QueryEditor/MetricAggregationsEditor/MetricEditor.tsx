@@ -41,7 +41,7 @@ const isBasicAggregation = (metric: MetricAggregation) => !metricAggregationConf
 
 const getTypeOptions = (
   previousMetrics: MetricAggregation[],
-  esVersion: string,
+  isEs7: string,
   xpack = false
 ): Array<SelectableValue<MetricAggregationType>> => {
   // we'll include Pipeline Aggregations only if at least one previous metric is a "Basic" one
@@ -49,8 +49,8 @@ const getTypeOptions = (
 
   return (
     Object.entries(metricAggregationConfig)
-      // Only showing metrics type supported by the configured version of ES
-      .filter(([_, { versionRange = '*' }]) => satisfies(esVersion, versionRange))
+      // Only showing elastic7-only metrics types if running on elastic7
+      .filter(([_, config]) => (config.es7Only ? isEs7 : true))
       // Filtering out Pipeline Aggregations if there's no basic metric selected before
       .filter(([_, config]) => includePipelineAggregations || !config.isPipelineAgg)
       // Filtering out X-Pack plugins if X-Pack is disabled
@@ -68,6 +68,11 @@ export const MetricEditor = ({ value }: Props) => {
   const query = useQuery();
   const dispatch = useDispatch();
   const getFields = useFields(value.type);
+
+  const getTypeOptionsAsync = async (previousMetrics: MetricAggregation[], xpack = false) => {
+    const isEs7 = await datasource.isEs7();
+    return getTypeOptions(previousMetrics, isEs7, xpack);
+  };
 
   const loadOptions = useCallback(async () => {
     const remoteFields = await getFields();
@@ -88,9 +93,9 @@ export const MetricEditor = ({ value }: Props) => {
   return (
     <>
       <InlineSegmentGroup>
-        <Segment
+        <SegmentAsync
           className={cx(styles.color, segmentStyles)}
-          options={getTypeOptions(previousMetrics, '7.10.0', datasource.xpack)}
+          loadOptions={() => getTypeOptionsAsync(previousMetrics, datasource.xpack)}
           onChange={(e) => dispatch(changeMetricType({ id: value.id, type: e.value! }))}
           value={toOption(value)}
         />
