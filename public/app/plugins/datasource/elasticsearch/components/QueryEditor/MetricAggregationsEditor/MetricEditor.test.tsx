@@ -97,11 +97,9 @@ describe('Metric Editor', () => {
 
       const getFields: ElasticDatasource['getFields'] = jest.fn(() => from([[]]));
 
-      const esVersion = '7.7.0';
-
       const wrapper = ({ children }: { children?: ReactNode }) => (
         <ElasticsearchProvider
-          datasource={{ getFields, esVersion, xpack } as ElasticDatasource}
+          datasource={{ getFields, xpack } as ElasticDatasource}
           query={query}
           range={getDefaultTimeRange()}
           onChange={() => {}}

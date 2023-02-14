@@ -90,7 +90,7 @@ export const MetricEditor = ({ value }: Props) => {
       <InlineSegmentGroup>
         <Segment
           className={cx(styles.color, segmentStyles)}
-          options={getTypeOptions(previousMetrics, datasource.esVersion, datasource.xpack)}
+          options={getTypeOptions(previousMetrics, '7.10.0', datasource.xpack)}
           onChange={(e) => dispatch(changeMetricType({ id: value.id, type: e.value! }))}
           value={toOption(value)}
         />

@@ -2,13 +2,12 @@ import { css } from '@emotion/css';
 import React from 'react';
 
 import { getDefaultTimeRange, GrafanaTheme2, QueryEditorProps } from '@grafana/data';
-import { Alert, InlineField, InlineLabel, Input, QueryField, useStyles2 } from '@grafana/ui';
+import { InlineField, InlineLabel, Input, QueryField, useStyles2 } from '@grafana/ui';
 
 import { ElasticDatasource } from '../../datasource';
 import { useNextId } from '../../hooks/useNextId';
 import { useDispatch } from '../../hooks/useStatelessReducer';
 import { ElasticsearchOptions, ElasticsearchQuery } from '../../types';
-import { isSupportedVersion } from '../../utils';
 
 import { BucketAggregationsEditor } from './BucketAggregationsEditor';
 import { ElasticsearchProvider } from './ElasticsearchQueryContext';
@@ -19,13 +18,6 @@ import { changeAliasPattern, changeQuery } from './state';
 export type ElasticQueryEditorProps = QueryEditorProps<ElasticDatasource, ElasticsearchQuery, ElasticsearchOptions>;
 
 export const QueryEditor = ({ query, onChange, onRunQuery, datasource, range }: ElasticQueryEditorProps) => {
-  if (!isSupportedVersion(datasource.esVersion)) {
-    return (
-      <Alert
-        title={`Support for Elasticsearch versions after their end-of-life (currently versions < 7.10) was removed`}
-      ></Alert>
-    );
-  }
   return (
     <ElasticsearchProvider
       datasource={datasource}

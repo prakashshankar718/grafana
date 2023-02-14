@@ -28,8 +28,6 @@ describe('ConfigEditor', () => {
     const mockOnOptionsChange = jest.fn();
     const options = createDefaultConfigOptions();
     // @ts-ignore
-    delete options.jsonData.esVersion;
-    // @ts-ignore
     delete options.jsonData.timeField;
     delete options.jsonData.maxConcurrentShardRequests;
 

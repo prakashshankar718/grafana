@@ -49,7 +49,7 @@ import { metricAggregationConfig } from './components/QueryEditor/MetricAggregat
 import { defaultBucketAgg, hasMetricOfType } from './queryDef';
 import { trackQuery } from './tracking';
 import { Logs, BucketAggregation, DataLinkConfig, ElasticsearchOptions, ElasticsearchQuery, TermsQuery } from './types';
-import { coerceESVersion, getScriptValue, isSupportedVersion } from './utils';
+import { getScriptValue } from './utils';
 
 export const REF_ID_STARTER_LOG_VOLUME = 'log-volume-';
 // Those are metadata fields as defined in https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-fields.html#_identity_metadata_fields.
@@ -79,7 +79,6 @@ export class ElasticDatasource
   name: string;
   index: string;
   timeField: string;
-  esVersion: string;
   xpack: boolean;
   interval: string;
   maxConcurrentShardRequests?: number;
@@ -107,7 +106,6 @@ export class ElasticDatasource
     const settingsData = instanceSettings.jsonData || ({} as ElasticsearchOptions);
 
     this.timeField = settingsData.timeField;
-    this.esVersion = coerceESVersion(settingsData.esVersion);
     this.xpack = Boolean(settingsData.xpack);
     this.indexPattern = new IndexPattern(this.index, settingsData.interval);
     this.interval = settingsData.timeInterval;
@@ -143,13 +141,6 @@ export class ElasticDatasource
     if (!this.isProxyAccess) {
       const error = new Error(
         'Browser access mode in the Elasticsearch datasource is no longer available. Switch to server access mode.'
-      );
-      return throwError(() => error);
-    }
-
-    if (!isSupportedVersion(this.esVersion)) {
-      const error = new Error(
-        'Support for Elasticsearch versions after their end-of-life (currently versions < 7.10) was removed.'
       );
       return throwError(() => error);
     }

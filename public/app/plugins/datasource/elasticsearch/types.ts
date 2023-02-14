@@ -106,7 +106,6 @@ export type Interval = 'Hourly' | 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
 
 export interface ElasticsearchOptions extends DataSourceJsonData {
   timeField: string;
-  esVersion: string;
   xpack?: boolean;
   interval?: Interval;
   timeInterval: string;
