@@ -2,7 +2,7 @@ import { css } from '@emotion/css';
 import React from 'react';
 
 import { getDefaultTimeRange, GrafanaTheme2, QueryEditorProps } from '@grafana/data';
-import { Alert, InlineField, InlineLabel, Input, QueryField, useStyles2 } from '@grafana/ui';
+import { Alert, InlineField, InlineLabel, Input, QueryField, RadioButtonGroup, useStyles2 } from '@grafana/ui';
 
 import { ElasticDatasource } from '../../datasource';
 import { useNextId } from '../../hooks/useNextId';
@@ -15,6 +15,7 @@ import { ElasticsearchProvider } from './ElasticsearchQueryContext';
 import { MetricAggregationsEditor } from './MetricAggregationsEditor';
 import { metricAggregationConfig } from './MetricAggregationsEditor/utils';
 import { changeAliasPattern, changeQuery } from './state';
+import { ModeSelector } from './ModeSelector';
 
 export type ElasticQueryEditorProps = QueryEditorProps<ElasticDatasource, ElasticsearchQuery, ElasticsearchOptions>;
 
@@ -102,6 +103,10 @@ const QueryEditorForm = ({ value }: Props) => {
             defaultValue={value.alias}
           />
         </InlineField>
+      </div>
+
+      <div>
+        <ModeSelector />
       </div>
 
       <MetricAggregationsEditor nextId={nextId} />
